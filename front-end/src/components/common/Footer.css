@@ -1,4 +1,4 @@
-/* src/components/common/Footer.css */
+
 
 .footer-wrapper {
     background-color: #1a1a1a;
@@ -13,7 +13,6 @@
     margin: 0 auto;
     padding: 0 20px;
     display: grid;
-    /* Mặc định Desktop: 4 cột đều nhau */
     grid-template-columns: repeat(4, 1fr); 
     gap: 30px;
 }
@@ -43,15 +42,14 @@
     color: #ccc;
     text-decoration: none;
     transition: 0.3s;
-    display: block; /* Giúp vùng bấm rộng hơn */
+    display: block; 
 }
 
 .footer-links a:hover {
     color: #2e7d32;
-    transform: translateX(5px); /* Hiệu ứng đẩy chữ sang phải mượt hơn padding */
+    transform: translateX(5px); 
 }
 
-/* Contact Info */
 .contact-info-block {
     display: flex;
     flex-direction: column;
@@ -67,12 +65,11 @@
     font-size: 13px;
 }
 
-/* --- RESPONSIVE --- */
 
 /* Tablet (iPad dọc): 2 cột */
 @media screen and (max-width: 1024px) {
     .footer-container {
-        grid-template-columns: repeat(2, 1fr); /* Chuyển thành 2 cột */
+        grid-template-columns: repeat(2, 1fr); 
         gap: 40px;
     }
 }
@@ -80,20 +77,19 @@
 /* Mobile: 1 cột */
 @media screen and (max-width: 768px) {
     .footer-container {
-        grid-template-columns: 1fr; /* Chuyển thành 1 cột dọc */
+        grid-template-columns: 1fr; 
         gap: 30px;
     }
     
     .footer-col {
-        text-align: center; /* Căn giữa nội dung trên điện thoại */
+        text-align: center; 
     }
 
-    /* Căn giữa luôn cả cái gạch chân tiêu đề */
+    
     .footer-col h3 {
         display: inline-block;
     }
-    
-    /* Căn giữa các icon liên hệ */
+
     .contact-info-block div {
         justify-content: center;
     }

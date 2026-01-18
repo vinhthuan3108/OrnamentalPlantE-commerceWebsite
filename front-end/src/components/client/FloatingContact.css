@@ -1,9 +1,9 @@
-/* --- PHẦN 1: CSS CHO PC (Floating Buttons cũ) --- */
+
 .desktop-only {
-    display: flex; /* Hiện trên PC */
+    display: flex; 
 }
 .mobile-only {
-    display: none; /* Ẩn trên PC */
+    display: none; 
 }
 
 .floating-contact-container {
@@ -15,7 +15,6 @@
     align-items: center;
 }
 
-/* ... (Giữ nguyên các class .contact-btn, .contact-list, .main-toggle-btn cũ của bạn ở đây) ... */
 .contact-btn {
     width: 45px; height: 45px; border-radius: 50%; background: #fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: center;
@@ -70,7 +69,6 @@
     100% { transform: rotate(0) scale(1); }
 }
 
-/* --- PHẦN 2: CSS CHO MOBILE BOTTOM BAR (MỚI) --- */
 
 /* Khi màn hình < 1024px (iPad dọc và Mobile) thì hiện Bottom Bar */
 @media screen and (max-width: 1024px) {
@@ -89,7 +87,6 @@
         right: 0;
         background-color: white;
         height: 60px;
-        /* Tăng z-index lên cao nhất để đảm bảo không gì đè lên được */
         z-index: 9999 !important; 
         display: flex;
         justify-content: space-around;
@@ -97,8 +94,7 @@
         padding: 5px 0;
         border-top: 1px solid #eee;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        
-        /* Thêm dòng này để chắc chắn nó không bị ẩn do hiệu ứng nào khác */
+
         visibility: visible !important;
         opacity: 1 !important;
         transform: none !important;
@@ -111,10 +107,9 @@
         text-decoration: none;
         color: #555;
         font-size: 11px;
-        flex: 1; /* Chia đều click area */
+        flex: 1; 
     }
 
-    /* Icon tròn màu (Home, Facebook) */
     .bottom-icon-circle {
         width: 30px;
         height: 30px;
@@ -127,14 +122,12 @@
         margin-bottom: 3px;
     }
 
-    /* Icon dạng ảnh (Zalo, Mess) */
     .bottom-icon-img {
         width: 30px;
         height: 30px;
         border-radius: 50%;
         overflow: hidden;
         margin-bottom: 3px;
-        /* Nếu ảnh zalo/mess của bạn là hình vuông, dòng này sẽ bo tròn nó */
         box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
     }
     

@@ -5,7 +5,7 @@ function VerifyOtp() {
     const navigate = useNavigate();
     const location = useLocation();
     
-    // Lấy email được truyền từ trang Register sang (nếu có)
+    // Lấy email được truyền từ trang Register sang
     const [email, setEmail] = useState(location.state?.email || '');
     const [otp, setOtp] = useState('');
     const [msg, setMsg] = useState('');
@@ -45,7 +45,7 @@ function VerifyOtp() {
                     value={email} 
                     onChange={e => setEmail(e.target.value)} 
                     placeholder="Email của bạn"
-                    disabled={!!location.state?.email} // Nếu có email truyền sang thì khóa lại cho đỡ sửa
+                    disabled={!!location.state?.email} // Nếu có email truyền sang thì khóa lại
                     style={{ width: '100%', padding: 10, marginBottom: 10, background: '#eee', border: '1px solid #ddd' }}
                 />
                 

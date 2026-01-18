@@ -1,6 +1,4 @@
-/* src/components/common/Header.css */
 
-/* --- 1. GLOBAL HEADER --- */
 .header-wrapper {
     background-color: white;
     border-bottom: 1px solid #eee;
@@ -18,13 +16,12 @@
     gap: 20px;
 }
 
-/* --- 2. LOGO --- */
 .logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
     gap: 10px;
-    flex-shrink: 0; /* Không cho logo bị bóp méo */
+    flex-shrink: 0; 
 }
 
 .logo-img {
@@ -52,17 +49,16 @@
     font-weight: 600;
 }
 
-/* --- 3. SEARCH BAR --- */
 .search-container {
     display: flex;
     align-items: center;
-    flex: 1; /* Chiếm hết khoảng trống ở giữa */
+    flex: 1; 
     max-width: 600px;
     background-color: #fff;
     border: 2px solid #2e7d32;
     border-radius: 4px;
     height: 40px;
-    position: relative; /* Để dropdown gợi ý bám theo */
+    position: relative; 
 }
 
 .search-select {
@@ -102,7 +98,6 @@
     background-color: #f1f8e9;
 }
 
-/* --- 4. USER & CART ACTIONS --- */
 .header-actions {
     display: flex;
     align-items: center;
@@ -145,7 +140,6 @@
     gap: 4px;
 }
 
-/* Cart Icon */
 .cart-wrapper { position: relative; }
 .cart-box {
     display: flex;
@@ -161,7 +155,6 @@
     text-transform: uppercase;
 }
 
-/* --- 5. NAVIGATION BAR (MENU NGANG) --- */
 .nav-bar {
     background-color: #2e7d32;
 }
@@ -190,7 +183,6 @@
     text-transform: uppercase;
 }
 
-/* Dropdown Menu (Con) */
 .has-dropdown { position: relative; }
 .dropdown-menu {
     display: none;
@@ -214,9 +206,6 @@
 }
 .dropdown-menu li a:hover { color: #2e7d32; padding-left: 25px; }
 
-/* --- 6. MINI CART & SEARCH SUGGESTIONS --- */
-/* (Giữ nguyên phần dropdown của Cart và Search như bạn đã có, 
-   nhưng copy từ đoạn code sạch dưới đây để tránh lỗi) */
 
 .search-results-dropdown {
     position: absolute; top: 100%; left: 0; right: 0;
@@ -247,49 +236,45 @@
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- 7. RESPONSIVE HEADER (PHẦN QUAN TRỌNG) --- */
+
 
 @media screen and (max-width: 992px) {
-    /* Khi màn hình nhỏ hơn 992px */
+
     .header-wrapper {
-        position: sticky; /* Làm cho header dính lại */
-        top: 0;           /* Dính ngay mép trên cùng */
+        position: sticky; 
+        top: 0;           
         width: 100%;
-        z-index: 1100;    /* Đảm bảo nó nổi lên trên nội dung trang web */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Thêm chút bóng đổ để tách biệt với nội dung */
+        z-index: 1100;    
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
     }
     .header-top {
-        flex-wrap: wrap; /* Cho phép rớt dòng */
+        flex-wrap: wrap; 
         padding: 10px 15px;
     }
 
-    /* Đẩy thanh tìm kiếm xuống dòng thứ 2 và cho full chiều rộng */
     .search-container {
-        order: 3; /* Thứ tự: Logo(1), Actions(2), Search(3) */
+        order: 3; 
         width: 100%; 
         max-width: 100%;
         margin-top: 10px;
-        border-color: #ddd; /* Giảm độ đậm viền cho đỡ thô */
+        border-color: #ddd; 
     }
     
     .logo-link { order: 1; }
-    .header-actions { order: 2; gap: 15px; margin-left: auto; /* Đẩy sát phải */ }
+    .header-actions { order: 2; gap: 15px; margin-left: auto; }
 
-    /* Ẩn bớt chữ trên Mobile cho gọn */
     .cart-label, .logo-slogan, .user-info span {
         display: none;
     }
-    
-    /* Ẩn Navbar ngang (Sẽ làm nút Hamburger sau) */
+
     .nav-bar {
         display: none; 
     }
 }
-/* --- CSS CHO MOBILE MENU (SIDEBAR) --- */
+/* sidebar mobile */
 
-/* 1. Nút Hamburger (Mặc định ẩn trên PC) */
 .hamburger-btn {
-    display: none; /* Desktop không hiện */
+    display: none; 
     background: none;
     border: none;
     font-size: 24px;
@@ -298,68 +283,60 @@
     padding: 0 10px 0 0;
 }
 
-/* 2. Responsive: Hiện nút Hamburger khi màn hình nhỏ */
 @media screen and (max-width: 992px) {
     .hamburger-btn {
-        display: block; /* Hiện lên */
-        order: 0; /* Đặt lên đầu tiên bên trái */
+        display: block; 
+        order: 0; 
     }
     .auth-links {
         display: none;
     }
 
-    /* Giữ lại icon Giỏ hàng nhưng đẩy nó sát phải */
     .header-actions {
-        margin-left: auto; /* Đẩy sát lề phải */
+        margin-left: auto; 
         gap: 15px;
     }
 }
 @media screen and (max-width: 768px) {
-    /* 1. Thu nhỏ khoảng cách chung trong header */
+
     .header-top {
-        padding: 10px; /* Giảm padding để có thêm diện tích */
-        gap: 10px; /* Giảm khoảng cách giữa nút menu, logo và giỏ hàng */
+        padding: 10px; 
+        gap: 10px; 
     }
 
-    /* 2. Thu nhỏ ảnh Logo */
     .logo-img {
-        max-height: 40px; /* Kích thước gốc là 55px, giảm xuống còn 40px */
+        max-height: 40px; 
     }
 
-    /* 3. Thu nhỏ tên cửa hàng */
     .logo-title {
-        font-size: 18px; /* Kích thước gốc là 22px */
+        font-size: 18px;
     }
 
-    /* 4. Ẩn luôn câu slogan cho gọn (Nếu tên cửa hàng vẫn quá dài) */
-    /* Nếu bạn vẫn muốn hiện slogan thì xóa dòng display: none đi và giảm font-size xuống tầm 11px */
     .logo-slogan {
         display: none; 
     }
 
-    /* 5. Đảm bảo khối logo không chiếm quá nhiều diện tích vô lý */
     .logo-link {
-        flex: 1; /* Cho phép co giãn */
-        min-width: 0; /* Cần thiết để text có thể thu nhỏ lại nếu quá chật */
-        margin-right: 10px; /* Tạo chút khoảng cách với giỏ hàng */
+        flex: 1; 
+        min-width: 0; 
+        margin-right: 10px; 
     }
 
-    /* 6. Tinh chỉnh lại nút giỏ hàng và nút 3 gạch cho cân đối với logo mới */
     .hamburger-btn, 
     .cart-icon {
-        font-size: 22px; /* Thu nhỏ icon lại một chút cho đồng bộ */
+        font-size: 22px; 
     }
     
     .header-actions {
-        gap: 10px; /* Giảm khoảng cách giữa các icon bên phải nếu có nhiều hơn 1 */
+        gap: 10px; 
     }
 }
-/* 3. Lớp phủ đen mờ (Overlay) */
+
 .mobile-menu-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Màu đen trong suốt */
-    z-index: 2000; /* Nằm trên cùng */
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 2000; 
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s;
@@ -369,27 +346,24 @@
     visibility: visible;
 }
 
-/* 4. Khung Menu Chính (Container) */
 .mobile-menu-container {
     position: fixed;
     top: 0; 
-    left: -280px; /* Giấu sang bên trái màn hình */
+    left: -280px; 
     width: 280px;
-    height: 100vh; /* Full chiều cao */
+    height: 100vh; 
     background-color: white;
-    z-index: 2001; /* Nằm trên cả lớp phủ */
+    z-index: 2001; 
     box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease-in-out; /* Hiệu ứng trượt mượt */
+    transition: transform 0.3s ease-in-out; 
     display: flex;
     flex-direction: column;
 }
 
-/* Khi có class 'open' thì trượt ra */
 .mobile-menu-container.open {
     transform: translateX(280px);
 }
 
-/* 5. Header của Menu (Chữ MENU + Nút đóng) */
 .mobile-menu-header {
     background-color: #2e7d32;
     color: white;
@@ -412,12 +386,11 @@
     cursor: pointer;
 }
 
-/* 6. Danh sách Link */
 .mobile-menu-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    overflow-y: auto; /* Cho phép cuộn nếu menu dài */
+    overflow-y: auto; 
 }
 
 .mobile-menu-list li a, 
@@ -431,7 +404,6 @@
     font-size: 14px;
 }
 
-/* Submenu (Danh mục con) */
 .mobile-submenu-title {
     background-color: #fafafa;
     color: #2e7d32;
@@ -448,7 +420,7 @@
 }
 
 .mobile-submenu li a {
-    padding-left: 35px; /* Thụt đầu dòng cho cấp con */
+    padding-left: 35px;
     font-weight: normal;
     color: #555;
     font-size: 13px;

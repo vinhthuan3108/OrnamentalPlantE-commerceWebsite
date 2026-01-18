@@ -13,9 +13,8 @@ const PostModal = ({ post, onClose, onSuccess }) => {
     const [categoryId, setCategoryId] = useState('');
     const [categories, setCategories] = useState([]);
     const [shortDescription, setShortDescription] = useState('');
-    const [isActive, setIsActive] = useState(true); // Thêm state cho checkbox Hoạt động
+    const [isActive, setIsActive] = useState(true); 
 
-    // 1. Lấy danh mục
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -26,7 +25,6 @@ const PostModal = ({ post, onClose, onSuccess }) => {
         fetchCategories();
     }, []);
 
-    // 2. Đồng bộ dữ liệu khi Sửa/Thêm mới
     useEffect(() => {
         if (post) {
             setTitle(post.title || '');
@@ -82,13 +80,12 @@ const PostModal = ({ post, onClose, onSuccess }) => {
         'header',
         'bold', 'italic', 'underline', 'strike',
         'list', 
-        'align', // Quan trọng: Phải có align ở đây
+        'align', 
         'image', 'link', 'video'
     ];
     const handleSubmit = async () => {
         if (!title || !categoryId) return alert("Vui lòng nhập đầy đủ thông tin!");
 
-        // 1. Lấy Token từ localStorage (Kiểm tra xem lúc login bạn lưu tên là 'token' hay gì nhé)
         const token = localStorage.getItem('token'); 
         
         if (!token) {
@@ -96,10 +93,9 @@ const PostModal = ({ post, onClose, onSuccess }) => {
             return;
         }
 
-        // 2. Tạo Header chứa Token
         const config = {
             headers: {
-                Authorization: `Bearer ${token}` // Quan trọng: Phải có chữ Bearer và khoảng trắng
+                Authorization: `Bearer ${token}` 
             }
         };
 
@@ -116,10 +112,8 @@ const PostModal = ({ post, onClose, onSuccess }) => {
 
         try {
             if (post?.postId) {
-                // Sửa bài viết (PUT) -> truyền config vào tham số thứ 3
                 await axios.put(`${API_BASE}/api/TblPosts/${post.postId}`, payload, config);
             } else {
-                // Thêm mới (POST) -> truyền config vào tham số thứ 3
                 await axios.post(`${API_BASE}/api/TblPosts`, payload, config);
             }
             onSuccess();

@@ -1,22 +1,22 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = ({ allowedRoles }) => {
-  // Lấy user từ localStorage (hoặc nơi bạn lưu state đăng nhập)
+  // Lấy user từ localStorage 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  // 1. Chưa đăng nhập -> Về trang Login
+  //Chưa đăng nhập -> Về trang Login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // 2. Có đăng nhập nhưng sai quyền -> Về trang chủ hoặc trang báo lỗi 403
+  //Có đăng nhập nhưng sai quyền -> Về trang chủ
   if (allowedRoles && !allowedRoles.includes(user.roleId)) {
-    // Có thể thay bằng trang <AccessDenied /> nếu muốn
+
     alert("Bạn không có quyền truy cập trang này!");
     return <Navigate to="/" replace />; 
   }
 
-  // 3. Hợp lệ -> Cho đi tiếp
+  //Hợp lệ ->đi tiếp
   return <Outlet />;
 };
 

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link để chuyển trang
+import { Link } from 'react-router-dom'; 
 import axios from 'axios';
 import './FloatingContact.css';
 
-// Import các icon từ react-icons (cho nhẹ và nét)
 import { FaHome, FaFacebookF, FaArrowUp } from 'react-icons/fa';
 
-// Import ảnh icon cũ (cho Zalo/Messenger nếu muốn giữ màu gốc)
 import iconZalo from '../../assets/images/zalo.jpg';
 import iconMessenger from '../../assets/images/messenger.jpg';
 import { API_BASE } from '../../utils/apiConfig.jsx';
@@ -59,7 +57,7 @@ const FloatingContact = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // --- GIAO DIỆN 1: FLOATING BUTTON (Dành cho PC) ---
+    // floating button-pc 
     const renderDesktopFloating = () => (
         <div className="floating-contact-container desktop-only">
             <div className={`contact-list ${isOpen ? 'show' : 'hide'}`}>
@@ -90,10 +88,9 @@ const FloatingContact = () => {
         </div>
     );
 
-    // --- GIAO DIỆN 2: BOTTOM BAR (Dành cho Mobile/Tablet dọc) ---
+    // mobile ---
     const renderMobileBottomBar = () => (
         <div className="mobile-bottom-bar mobile-only">
-            {/* 1. Trang chủ */}
             <Link to="/" className="bottom-item">
                 <div className="bottom-icon-circle" style={{backgroundColor: '#ff6b00'}}>
                     <FaHome />
@@ -101,7 +98,7 @@ const FloatingContact = () => {
                 <span className="bottom-label">Trang chủ</span>
             </Link>
 
-            {/* 2. Fanpage (Thay cho Gọi điện) */}
+            {/*Fanpage */}
             {links.facebook && (
                 <a href={links.facebook} target="_blank" rel="noreferrer" className="bottom-item">
                     <div className="bottom-icon-circle" style={{backgroundColor: '#1877f2'}}>
@@ -111,10 +108,8 @@ const FloatingContact = () => {
                 </a>
             )}
 
-            {/* 3. Zalo */}
             {links.zalo && (
                 <a href={getZaloLink(links.zalo)} target="_blank" rel="noreferrer" className="bottom-item">
-                     {/* Giữ nguyên icon ảnh Zalo nhưng bo tròn */}
                     <div className="bottom-icon-img">
                          <img src={iconZalo} alt="Zalo" />
                     </div>
@@ -122,7 +117,6 @@ const FloatingContact = () => {
                 </a>
             )}
 
-            {/* 4. Messenger */}
             {links.messenger && (
                 <a href={links.messenger} target="_blank" rel="noreferrer" className="bottom-item">
                     <div className="bottom-icon-img">

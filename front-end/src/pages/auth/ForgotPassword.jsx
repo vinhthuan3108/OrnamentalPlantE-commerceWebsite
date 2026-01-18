@@ -8,12 +8,12 @@ function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // 1. Thêm state mới
+    const [confirmPassword, setConfirmPassword] = useState(''); 
     const [loading, setLoading] = useState(false);
     
     const navigate = useNavigate();
 
-    // Xử lý Gửi yêu cầu lấy mã OTP
+
     const handleSendCode = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -38,11 +38,10 @@ function ForgotPassword() {
         }
     };
 
-    // Xử lý Đặt lại mật khẩu
+
     const handleResetPassword = async (e) => {
         e.preventDefault();
 
-        // 2. Thêm validation kiểm tra trùng khớp
         if (newPassword !== confirmPassword) {
             alert("Mật khẩu xác nhận không khớp!");
             return;
@@ -123,7 +122,6 @@ function ForgotPassword() {
                         />
                     </div>
 
-                    {/* 3. Thêm ô nhập lại mật khẩu vào đây */}
                     <div style={{ marginBottom: '15px' }}>
                         <label>Nhập lại mật khẩu mới:</label>
                         <input 

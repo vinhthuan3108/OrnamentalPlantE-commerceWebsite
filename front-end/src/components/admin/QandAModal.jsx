@@ -4,7 +4,6 @@ function QandAModal({ isOpen, onClose, onSubmit, initialData }) {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [active, setActive] = useState(true);
-    // 1. Thêm state lưu thứ tự
     const [displayOrder, setDisplayOrder] = useState(0);
 
     useEffect(() => {
@@ -12,13 +11,13 @@ function QandAModal({ isOpen, onClose, onSubmit, initialData }) {
             setQuestion(initialData.question || '');
             setAnswer(initialData.answer || '');
             setActive(initialData.isActive ?? true);
-            // 2. Load thứ tự cũ nếu có, không thì mặc định 0
+            //Load thứ tự cũ nếu có, không thì mặc định 0
             setDisplayOrder(initialData.displayOrder || 0);
         } else {
             setQuestion('');
             setAnswer('');
             setActive(true);
-            // 3. Reset về 0 khi thêm mới
+            //Reset về 0 khi thêm mới
             setDisplayOrder(0);
         }
     }, [initialData, isOpen]);
@@ -33,7 +32,6 @@ function QandAModal({ isOpen, onClose, onSubmit, initialData }) {
             question: question,
             answer: answer,
             isActive: active,
-            // 4. Gửi kèm displayOrder (ép kiểu số nguyên)
             displayOrder: parseInt(displayOrder) || 0 
         };
         onSubmit(formData);
@@ -47,7 +45,7 @@ function QandAModal({ isOpen, onClose, onSubmit, initialData }) {
             <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', width: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
                 <h3>{initialData ? 'Cập Nhật Câu Hỏi' : 'Thêm Câu Hỏi Mới'}</h3>
 
-                {/* Ô nhập câu hỏi */}
+                
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{display:'block', marginBottom:'5px', fontWeight:'bold'}}>Câu hỏi:</label>
                     <input 
@@ -59,7 +57,7 @@ function QandAModal({ isOpen, onClose, onSubmit, initialData }) {
                     />
                 </div>
 
-                {/* Ô nhập câu trả lời */}
+                
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{display:'block', marginBottom:'5px', fontWeight:'bold'}}>Câu trả lời:</label>
                     <textarea 
@@ -70,9 +68,9 @@ function QandAModal({ isOpen, onClose, onSubmit, initialData }) {
                     />
                 </div>
 
-                {/* Hàng chứa Thứ tự hiển thị + Checkbox Active */}
+                
                 <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '30px' }}>
-                    {/* 5. Ô nhập Thứ tự hiển thị */}
+                    
                     <div>
                         <label style={{display:'block', marginBottom:'5px', fontWeight:'bold'}}>Thứ tự hiển thị:</label>
                         <input 

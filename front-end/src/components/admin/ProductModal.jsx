@@ -5,13 +5,13 @@ import { FaTrash, FaPlus } from 'react-icons/fa';
 import { API_BASE } from '../../utils/apiConfig.jsx';
 import Swal from 'sweetalert2';
 function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
-    // --- STATE CHUNG ---
+    
     const [code, setCode] = useState('');
     const [name, setName] = useState('');
     const [catId, setCatId] = useState(''); 
     const [active, setActive] = useState(true);
 
-    // --- STATE NGÀY SALE & MÔ TẢ ---
+    
     const [saleStart, setSaleStart] = useState('');
     const [saleEnd, setSaleEnd] = useState('');
     
@@ -21,13 +21,12 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
     const [images, setImages] = useState([]); 
     const [uploading, setUploading] = useState(false);
 
-    // --- STATE BIẾN THỂ (VARIANTS) ---
-    // CẬP NHẬT: Thêm trường weight (Kg) mặc định là 0
+    
     const [variants, setVariants] = useState([
         { variantName: '', originalPrice: 0, salePrice: 0, weight: 0, stockQuantity: 0, minStockAlert: 5 }
     ]);
 
-    // --- CẤU HÌNH EDITOR (Giữ nguyên) ---
+    
     const shortQuillRef = useRef(null);
     const detailQuillRef = useRef(null);
     //const API_BASE = 'https://localhost:7298';
@@ -73,14 +72,14 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
     const modulesShort = useMemo(() => ({ toolbar: { container: toolbarContainer, handlers: { image: createImageHandler(shortQuillRef) } } }), []);
     const modulesDetail = useMemo(() => ({ toolbar: { container: toolbarContainer, handlers: { image: createImageHandler(detailQuillRef) } } }), []);
 
-    // Helper format ngày cho input datetime-local
+    
     const formatDateForInput = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
         return date.toISOString().slice(0, 16);
     };
 
-    // --- LOAD DỮ LIỆU KHI EDIT ---
+    
     useEffect(() => {
         if (initialData) {
             setCode(initialData.productCode || '');
@@ -91,20 +90,20 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
             setFengShui(initialData.fengShuiTags || '');
             setActive(initialData.isActive ?? true);
             
-            // Load ngày sale
+            
             setSaleStart(formatDateForInput(initialData.saleStartDate));
             setSaleEnd(formatDateForInput(initialData.saleEndDate));
 
             if (initialData.tblProductImages) setImages(initialData.tblProductImages);
 
-            // Load Variants
+            
             if (initialData.tblProductVariants && initialData.tblProductVariants.length > 0) {
                 setVariants(initialData.tblProductVariants.map(v => ({
                     variantId: v.variantId,
                     variantName: v.variantName,
                     originalPrice: v.originalPrice,
                     salePrice: v.salePrice || 0,
-                    weight: v.weight || 0, // <--- LOAD WEIGHT
+                    weight: v.weight || 0, 
                     stockQuantity: v.stockQuantity || 0,
                     minStockAlert: v.minStockAlert || 5
                 })));
@@ -113,7 +112,7 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
             }
 
         } else {
-            // Reset form (Thêm mới)
+            
             setCode('');
             setName(''); 
             setCatId(categories.length > 0 ? categories[0].categoryId : '');
@@ -124,7 +123,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
         }
     }, [initialData, isOpen, categories]);
 
-    // --- XỬ LÝ ẢNH ---
     const handleFileChange = async (e) => {
         const files = e.target.files;
         if (!files || files.length === 0) return;
@@ -159,7 +157,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
         setImages(newArr);
     };
 
-    // --- XỬ LÝ VARIANTS ---
     const handleVariantChange = (index, field, value) => {
         const newVariants = [...variants];
         newVariants[index][field] = value;
@@ -167,7 +164,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
     };
 
     const addVariant = () => {
-        // CẬP NHẬT: Thêm weight: 0 khi tạo dòng mới
         setVariants([...variants, { variantName: '', originalPrice: 0, salePrice: 0, weight: 0, stockQuantity: 0, minStockAlert: 5 }]);
     };
 
@@ -184,20 +180,16 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
         setVariants(newVariants);
     };
 
-    // --- SUBMIT ---
-    // --- SUBMIT VỚI SWEETALERT2 ---
-    // --- SUBMIT VỚI SWEETALERT2 ---
+
     const handleSubmit = () => {
-        // 1. Validate thông tin chung
         if (!code.trim()) return Swal.fire('Thiếu thông tin', 'Mã sản phẩm không được trống', 'warning');
         if (!name.trim()) return Swal.fire('Thiếu thông tin', 'Tên sản phẩm không được trống', 'warning');
         if (!catId) return Swal.fire('Thiếu thông tin', 'Vui lòng chọn danh mục', 'warning');
 
-        // 2. Validate Variants (Phân loại hàng)
+
         for (let i = 0; i < variants.length; i++) {
             const v = variants[i];
-            
-            // Validate Tên loại
+
             if (!v.variantName.trim()) {
                 return Swal.fire({
                     title: 'Dữ liệu không hợp lệ',
@@ -209,7 +201,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
             const originalPrice = parseFloat(v.originalPrice);
             const salePrice = parseFloat(v.salePrice) || 0;
 
-            // --- YÊU CẦU CŨ: GIÁ GỐC PHẢI > 0 ---
             if (isNaN(originalPrice) || originalPrice <= 0) {
                 return Swal.fire({
                     title: 'Giá không hợp lệ',
@@ -218,7 +209,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                 });
             }
 
-            // --- YÊU CẦU MỚI: GIÁ KHUYẾN MÃI KHÔNG ĐƯỢC LỚN HƠN GIÁ GỐC ---
             if (salePrice > originalPrice) {
                  return Swal.fire({
                     title: 'Giá không hợp lệ',
@@ -227,7 +217,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                 });
             }
 
-            // Validate Cân nặng (Không được âm)
             if (isNaN(parseFloat(v.weight)) || parseFloat(v.weight) < 0) {
                 return Swal.fire({
                     title: 'Trọng lượng lỗi',
@@ -237,9 +226,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
             }
         }
         
-        // ... (Giữ nguyên phần logic validate ngày tháng bên dưới) ...
-
-        // --- LOGIC VALIDATE KHUYẾN MÃI ---
         const hasSaleDates = saleStart && saleEnd;
         const hasAnySalePrice = variants.some(v => parseFloat(v.salePrice) > 0);
 
@@ -262,14 +248,12 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                     icon: 'warning'
                 });
             }
-            
-            // Check logic ngày
+
             if (new Date(saleStart) >= new Date(saleEnd)) {
                 return Swal.fire('Thời gian lỗi', 'Thời gian kết thúc khuyến mãi phải lớn hơn thời gian bắt đầu!', 'error');
             }
         }   
 
-        // 3. Chuẩn hóa dữ liệu trước khi gửi
         const formData = {
             productId: initialData ? initialData.productId : 0,
             productCode: code.trim(),
@@ -322,7 +306,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                 </h3>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px' }}>
-                    {/* CỘT TRÁI */}
                     <div>
                         <div style={{ marginBottom: '10px' }}>
                             <label>Mã sản phẩm (*):</label>
@@ -363,7 +346,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                         </div>
                     </div>
 
-                    {/* CỘT PHẢI: HÌNH ẢNH */}
                     <div>
                         <label><strong>Hình ảnh sản phẩm:</strong></label>
                         <div style={{ marginBottom: '10px', marginTop:'5px' }}>
@@ -385,7 +367,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                     </div>
                 </div>
 
-                {/* KHU VỰC PHÂN LOẠI HÀNG (VARIANTS) */}
                 <div style={{ marginTop: '20px', border: '1px solid #bce8f1', padding: '15px', borderRadius: '5px', backgroundColor: '#f0f9ff' }}>
                     <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'10px'}}>
                         <div style={{display:'flex', alignItems:'baseline', gap:'10px'}}>
@@ -406,7 +387,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                                 <th style={{padding:'8px', border:'1px solid #ddd', width:'130px'}}>Giá gốc</th>
                                 <th style={{padding:'8px', border:'1px solid #ddd', width:'130px'}}>Giá KM</th>
                                 
-                                {/* CỘT MỚI: CÂN NẶNG */}
                                 <th style={{padding:'8px', border:'1px solid #ddd', width:'100px'}}>Trọng Lượng (Kg)</th>
 
                                 <th style={{padding:'8px', border:'1px solid #ddd', width:'80px'}}>Tồn kho</th>
@@ -426,12 +406,11 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                                     <td style={{padding:'5px', border:'1px solid #ddd'}}>
                                         <input type="number" value={v.salePrice} onChange={e => handleVariantChange(idx, 'salePrice', e.target.value)} style={{width:'100%', padding:'5px', border:'1px solid #ccc', textAlign:'right'}} />
                                     </td>
-                                    
-                                    {/* INPUT CÂN NẶNG */}
+
                                     <td style={{padding:'5px', border:'1px solid #ddd'}}>
                                         <input 
                                             type="number" 
-                                            step="0.1" // Cho phép nhập số lẻ
+                                            step="0.1" 
                                             value={v.weight} 
                                             onChange={e => handleVariantChange(idx, 'weight', e.target.value)} 
                                             style={{width:'100%', padding:'5px', border:'1px solid #ccc', textAlign:'center'}} 
@@ -471,7 +450,6 @@ function ProductModal({ isOpen, onClose, onSubmit, initialData, categories }) {
                     </table>
                 </div>
 
-                {/* EDITOR MÔ TẢ */}
                 <div style={{ marginTop: '20px' }}>
                     <label style={{display: 'block', marginBottom: '5px', fontWeight:'bold'}}>Mô tả ngắn:</label>
                     <ReactQuill ref={shortQuillRef} theme="snow" value={shortDesc} onChange={setShortDesc} modules={modulesShort} formats={formats} style={{ height: '120px', marginBottom: '50px' }} />

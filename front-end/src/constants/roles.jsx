@@ -1,6 +1,4 @@
-// src/constants/roles.js
 
-// 1. ĐỊNH NGHĨA ROLE ID
 export const ROLES = {
   ADMIN: 1,
   CUSTOMER: 2,
@@ -8,7 +6,7 @@ export const ROLES = {
   WAREHOUSE: 4, // Nhân viên kho
 };
 
-// 2. CẤU HÌNH MENU SIDEBAR
+
 export const MENU_ITEMS = [
   {
     id: 'products',
@@ -75,35 +73,35 @@ export const MENU_ITEMS = [
   },
   {
     id: 'testimonial',
-    title: "⭐ Quản lý đánh giá giả", // Đổi icon sang ⭐ cho hợp ngữ cảnh đánh giá
+    title: "⭐ Quản lý đánh giá giả", 
     path: "/admin/testimonial",
     permissions: [ROLES.ADMIN, ROLES.SALES],
   },
    {
     id: 'questionandanswer',
-    title: "⭐ Quản lý Q&A", // Đổi icon sang ⭐ cho hợp ngữ cảnh đánh giá
+    title: "⭐ Quản lý Q&A", 
     path: "/admin/questionandanswer",
     permissions: [ROLES.ADMIN, ROLES.SALES],
   },
-  // --- PHẦN ĐÃ SỬA ĐỔI ---
+ 
   {
     id: 'settings',
     title: "⚙️ Cài đặt hệ thống",
-    permissions: [ROLES.ADMIN], // Chỉ Admin mới thấy mục cha này
+    permissions: [ROLES.ADMIN], 
     children: [
       { 
-        title: "🏪 Thông tin cửa hàng", // Logo, Favicon, Hotline, Zalo...
+        title: "🏪 Thông tin cửa hàng", 
         path: "/admin/shop-info", 
         permissions: [ROLES.ADMIN] 
       },
       { 
-        title: "🔌 Tích hợp & Kết nối", // App Password, Email, API Keys...
+        title: "🔌 Tích hợp & Kết nối", 
         path: "/admin/system-integration", 
         permissions: [ROLES.ADMIN] 
       },
     ]
   },
-  // -----------------------
+
   {
     id: 'users',
     title: "👥 Quản lý Tài khoản",

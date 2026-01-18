@@ -23,7 +23,6 @@ function CategoryModal({ isOpen, onClose, onSubmit, initialData }) {
 
     if (!isOpen) return null;
     const handleSubmit = () => {
-        // VALIDATION: Kiểm tra tên trống
         if (!name.trim()) {
             return Swal.fire({
                 title: 'Thiếu thông tin!',
@@ -70,10 +69,8 @@ function CategoryModal({ isOpen, onClose, onSubmit, initialData }) {
                     />
                 </div>
 
-                {/* --- PHẦN ĐÃ CHỈNH SỬA --- */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '20px' }}>
                     
-                    {/* Phần Thứ tự */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <label style={{ marginRight: '10px', fontWeight: 'bold' }}>Thứ tự:</label>
                         <input 
@@ -84,7 +81,6 @@ function CategoryModal({ isOpen, onClose, onSubmit, initialData }) {
                         />
                     </div>
 
-                    {/* Phần Checkbox Hoạt động */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', userSelect: 'none' }}>
                             <input 
@@ -98,7 +94,6 @@ function CategoryModal({ isOpen, onClose, onSubmit, initialData }) {
                     </div>
 
                 </div>
-                {/* ------------------------- */}
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                     <button onClick={onClose} style={{ padding: '8px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Hủy</button>
