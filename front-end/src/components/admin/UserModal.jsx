@@ -50,7 +50,7 @@ function UserModal({ isOpen, onClose, onSubmit, initialData, roles }) {
             <div style={{ background: 'white', padding: 20, borderRadius: 8, width: 400 }}>
                 <h3>{initialData ? 'Sửa Nhân Viên' : 'Thêm Nhân Viên'}</h3>
                 
-                {/* ... Các ô input cũ giữ nguyên ... */}
+                
                 
                 <label>Email (Tên đăng nhập):</label>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)} disabled={!!initialData} style={{ display: 'block', width: '100%', marginBottom: 10, padding: 5 }} />
@@ -58,7 +58,7 @@ function UserModal({ isOpen, onClose, onSubmit, initialData, roles }) {
                 <label>Họ tên:</label>
                 <input type="text" value={fullName} onChange={e => setFullName(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: 10, padding: 5 }} />
 
-                {/* 4. THÊM Ô NHẬP SỐ ĐIỆN THOẠI Ở ĐÂY */}
+                
                 <label>Số điện thoại:</label>
                 <input 
                     type="text" 

@@ -33,25 +33,24 @@ namespace back_end.Controllers
 
             var result = cart.TblCartItems.Select(item => {
 
-                // --- LOGIC TÍNH GIÁ MỚI ---
+                
                 var variant = item.Variant;
                 var product = item.Variant.Product;
                 var now = DateTime.Now;
 
-                // 1. Kiểm tra có giá sale > 0 không
+                //Kiểm tra có giá sale > 0 không
                 bool hasSalePrice = variant.SalePrice.HasValue && variant.SalePrice.Value > 0;
 
-                // 2. Kiểm tra ngày khuyến mãi (Nếu sản phẩm có set ng ày km)
-                // Logic: Nếu ngày Start/End có dữ liệu thì phải check, nếu null      thì bỏ qua
-                // Ở đây giả sử: Nếu có set ngày thì phải đúng hạn mới được Sale
+                // Kiểm tra ngày khuyến mãi (Nếu sản phẩm có set ng ày km)
+                //Nếu ngày Start/End có dữ liệu thì phải check, nếu nullthì bỏ qua
+
                 bool isDateValid = true;
                 if (product.SaleStartDate.HasValue && product.SaleEndDate.HasValue)
                 {
                     isDateValid = now >= product.SaleStartDate.Value && now <= product.SaleEndDate.Value;
                 }
 
-                // Chốt giá cuối cùng
-                // Phải thỏa mãn: Có giá Sale VÀ Giá Sale < Giá Gốc VÀ Còn hạn khuyến mãi
+                
                 decimal finalPrice = (hasSalePrice && isDateValid && variant.SalePrice < variant.OriginalPrice)
                                      ? variant.SalePrice.Value
                                      : variant.OriginalPrice;

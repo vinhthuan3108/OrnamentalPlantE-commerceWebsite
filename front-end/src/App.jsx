@@ -59,17 +59,15 @@ function App() {
   useEffect(() => {
     const fetchSystemConfig = async () => {
       try {
-        // Thay đổi port 7298 cho đúng với máy bạn
+
         const API_BASE = 'https://localhost:7298'; 
         const res = await axios.get(`${API_BASE}/api/TblSystemConfig`);
         
-        // Chuyển mảng thành object cho dễ dùng
         const config = res.data.reduce((acc, item) => {
             acc[item.configKey] = item.configValue;
             return acc;
         }, {});
 
-        // 1. CẬP NHẬT FAVICON
         if (config.FaviconUrl) {
           // Tìm thẻ link icon cũ
           let link = document.querySelector("link[rel~='icon']");
@@ -79,11 +77,9 @@ function App() {
             link.rel = 'icon';
             document.getElementsByTagName('head')[0].appendChild(link);
           }
-          // Gán đường dẫn ảnh mới (phải nối với API_BASE vì ảnh nằm ở server backend)
           link.href = `${API_BASE}${config.FaviconUrl}`;
         }
 
-        // 2. CẬP NHẬT TIÊU ĐỀ TAB TRÌNH DUYỆT (TITLE)
         if (config.StoreName) {
           document.title = config.StoreName;
         }
@@ -98,7 +94,7 @@ function App() {
   return (
     <>
     <Routes>
-      {/* --- NHÓM 1: DÀNH CHO KHÁCH HÀNG (Dùng MainLayout) --- */}
+      {/*NHÓM 1: khách hàng (Dùng MainLayout*/}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="products" element={<HomePage />} />
@@ -111,7 +107,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
-        {/* Các trang khác của khách hàng... */}
+
         <Route path="/intro" element={<IntroPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/guide" element={<GuidePage />} />
@@ -123,19 +119,19 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
 
-      {/* --- NHÓM 2: DÀNH CHO ADMIN (Dùng AdminLayout) --- */}
+      {/*Nhóm 2 admin (Dùng AdminLayout)*/}
       <Route path="/admin" element={<AdminLayout />}>
         
-        {/* === NHÓM CHUNG (Admin, Sale, Kho đều vào được) === */}
+        {/*Nhóm chung: Admin, Sale, Kho đều vào được */}
         <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES, ROLES.WAREHOUSE]} />}>
              <Route path="products" element={<AdminProducts />} />
              <Route path="categories" element={<Categories />} />
-             {/* Trang profile cá nhân admin ai cũng cần */}
+             
              <Route path="profile" element={<ProfilePage />} /> 
         </Route>
 
 
-        {/* === NHÓM SALES & ADMIN === */}
+        {/* sale và admin */}
         <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES]} />}>
              <Route path="orders" element={<AdminOrders />} />
              <Route path="vouchers" element={<Vouchers />} />
@@ -151,7 +147,7 @@ function App() {
         </Route>
 
 
-        {/* === NHÓM KHO (WAREHOUSE) & ADMIN === */}
+        {/*kho và admin */}
         <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.WAREHOUSE]} />}>
              <Route path="suppliers" element={<Suppliers/>} />
              <Route path="imports" element={<CreateImportReceipt/>} />
@@ -161,7 +157,7 @@ function App() {
         </Route>
 
 
-        {/* === NHÓM SUPER ADMIN (CHỈ ADMIN) === */}
+        {/* chỉ admin */}
         <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
              <Route path="users" element={<Users />} />
              <Route path="backup" element={<SystemBackup />} />
@@ -171,11 +167,7 @@ function App() {
 
       </Route>
 
-      {/* --- NHÓM 3: AUTH (Login/Register thường không có Layout) --- */}
-      {/* <Route path="/login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="verify-otp" element={<VerifyOtp />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+
       
     </Routes>
     <ToastContainer 

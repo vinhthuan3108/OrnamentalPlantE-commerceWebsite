@@ -42,6 +42,7 @@ namespace back_end.DTOs
     //DTO cho Hàng tồn kho lâu (Thay thế InventoryStatDto cũ)
     public class SlowMovingProductDto
     {
+        public int ProductId { get; set; }
         public string ProductName { get; set; } = null!;
         public string CategoryName { get; set; } = null!;
         public string Thumbnail { get; set; }

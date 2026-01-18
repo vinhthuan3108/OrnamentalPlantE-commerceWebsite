@@ -19,7 +19,7 @@ namespace back_end.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        //Hàm helper xử lý URL ảnh (Copy y chang từ StatisticsController)
+        
         private string GetFullImageUrl(string relativePath)
         {
             if (string.IsNullOrEmpty(relativePath)) return "";

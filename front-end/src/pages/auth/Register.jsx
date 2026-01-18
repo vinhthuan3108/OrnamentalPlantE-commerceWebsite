@@ -46,7 +46,6 @@ function Register() {
         e.preventDefault();
         setError('');
 
-        // Validation thủ công (dự phòng)
         if (!isValidEmail(formData.email)) {
             setError("Định dạng email không hợp lệ!");
             return;
@@ -114,7 +113,6 @@ function Register() {
                 )}
 
                 <form onSubmit={handleRegister}>
-                    {/* --- ĐOẠN ĐÃ SỬA: INPUT EMAIL --- */}
                     <div style={{ marginBottom: '15px' }}>
                         <label style={{fontWeight: '500'}}>Email</label>
                         <input 
@@ -122,15 +120,13 @@ function Register() {
                             name="email" 
                             required
                             value={formData.email} 
-                            // Sửa đổi onChange để vừa cập nhật state vừa reset validate message
                             onChange={(e) => {
                                 handleChange(e); 
-                                e.target.setCustomValidity(''); // Xóa lỗi cũ khi gõ
+                                e.target.setCustomValidity(''); 
                                 if (e.target.validity.typeMismatch) {
                                     e.target.setCustomValidity('Vui lòng nhập đúng định dạng email (ví dụ: abc@gmail.com)');
                                 }
                             }}
-                            // Thêm onInvalid để bắt sự kiện lỗi của trình duyệt
                             onInvalid={(e) => {
                                 if (e.target.validity.valueMissing) {
                                     e.target.setCustomValidity('Vui lòng nhập email, không được để trống');
@@ -141,8 +137,6 @@ function Register() {
                             style={{ width: '100%', padding: '10px', marginTop: '5px', border: '1px solid #ddd', borderRadius: '4px' }} 
                         />
                     </div>
-                    {/* --------------------------------- */}
-
                     <div style={{ marginBottom: '15px' }}>
                         <label style={{fontWeight: '500'}}>Họ và tên</label>
                         <input 

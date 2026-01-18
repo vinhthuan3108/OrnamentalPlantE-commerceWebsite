@@ -9,37 +9,33 @@ const ProductDetail = () => {
     const navigate = useNavigate();
     const { addToCart } = useContext(CartContext);
 
-    // --- STATE DỮ LIỆU ---
     const [product, setProduct] = useState(null);
     const [images, setImages] = useState([]);
     const [relatedProducts, setRelatedProducts] = useState([]);
-    
-    // --- STATE GIAO DIỆN & LOGIC ---
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     
-    // State quản lý biến thể (MỚI)
+    // State quản lý biến thể 
     const [selectedVariantId, setSelectedVariantId] = useState(null);
 
     //const BASE_URL = 'https://localhost:7298';
 
-    // --- FETCH DỮ LIỆU ---
     useEffect(() => {
         setProduct(null);
         setImages([]);
         setRelatedProducts([]);
         setQuantity(1);
         setCurrentIndex(0);
-        setSelectedVariantId(null); // Reset biến thể
+        setSelectedVariantId(null); 
         window.scrollTo(0, 0);
 
-        fetch(`${API_BASE}/api/TblProducts/${id}`) // [cite: 107]
+        fetch(`${API_BASE}/api/TblProducts/${id}`) 
             .then(res => res.json())
             .then(data => {
                 setProduct(data);
 
-                // Xử lý ảnh
                 if (data.tblProductImages && data.tblProductImages.length > 0) {
                     const sorted = [...data.tblProductImages].sort((a, b) => 
                         (b.isThumbnail === true ? 1 : 0) - (a.isThumbnail === true ? 1 : 0)
@@ -49,26 +45,26 @@ const ProductDetail = () => {
                     setImages([{ imageUrl: data.thumbnail }]);
                 }
 
-                // Tự động chọn biến thể đầu tiên nếu có (Giống logic Shopee/Modal cũ)
+                // Tự động chọn biến thể đầu tiên nếu có
                 if (data.tblProductVariants && data.tblProductVariants.length > 0) {
                     // Ưu tiên chọn cái nào còn hàng
                     const availableVariant = data.tblProductVariants.find(v => v.stockQuantity > 0);
                     if (availableVariant) {
                         setSelectedVariantId(availableVariant.variantId);
                     } else {
-                        // Nếu hết hàng sạch thì cứ chọn cái đầu
+                        // Nếu hết hàng th chọn cái đầu
                         setSelectedVariantId(data.tblProductVariants[0].variantId);
                     }
                 }
 
-                return fetch(`${API_BASE}/api/TblProducts/related/${id}`); // [cite: 109]
+                return fetch(`${API_BASE}/api/TblProducts/related/${id}`); 
             })
             .then(res => res.json())
             .then(relatedData => setRelatedProducts(relatedData))
             .catch(err => console.error("Lỗi tải dữ liệu:", err));
     }, [id]);
 
-    // --- CÁC HÀM XỬ LÝ SỐ LƯỢNG ---
+
     const handleIncreaseQty = () => setQuantity(prev => prev + 1);
     const handleDecreaseQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
     const handleQtyChange = (e) => {
@@ -76,27 +72,24 @@ const ProductDetail = () => {
         if (!isNaN(val) && val >= 1) setQuantity(val);
     };
 
-    // --- CÁC HÀM XỬ LÝ ẢNH ---
+
     const nextImage = () => setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
     const prevImage = () => setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
     const currentImgUrl = images.length > 0 
         ? (images[currentIndex].imageUrl?.startsWith('http') ? images[currentIndex].imageUrl : `${API_BASE}${images[currentIndex].imageUrl}`) 
         : '';
 
-    // --- XỬ LÝ HTML ---
     const cleanHtmlContent = (htmlString) => {
         if (!htmlString) return '';
         return htmlString.replace(/&nbsp;/g, ' ');
     };
 
-    // --- TÍNH TOÁN GIÁ & TỒN KHO (LOGIC MỚI) ---
-    // Tìm biến thể đang được chọn
+
     const currentVariant = product?.tblProductVariants?.find(v => v.variantId === selectedVariantId);
 
     const getDisplayInfo = () => {
         if (!product) return { price: 0, oldPrice: 0, stock: 0, isSale: false };
 
-        // 1. Nếu ĐANG CHỌN biến thể -> Lấy thông tin chính xác của nó
         if (currentVariant) {
             return {
                 price: currentVariant.salePrice && currentVariant.salePrice > 0 ? currentVariant.salePrice : currentVariant.originalPrice,
@@ -106,10 +99,10 @@ const ProductDetail = () => {
             };
         }
 
-        // 2. Nếu CHƯA chọn (hoặc sp không có biến thể) -> Lấy khoảng giá min/max hoặc tổng
+        //Nếu chưa chọn (hoặc sp không có biến thể) -> Lấy khoảng giá min/max hoặc tổng
         const variants = product.tblProductVariants || [];
         if (variants.length > 0) {
-            // Logic hiển thị dải giá (tùy chọn, ở đây mình ưu tiên hiển thị giá thấp nhất để câu khách)
+            // Logic hiển thị dải giá
             const prices = variants.map(v => (v.salePrice > 0 ? v.salePrice : v.originalPrice));
             const minPrice = Math.min(...prices);
             const totalStock = variants.reduce((sum, v) => sum + (v.stockQuantity || 0), 0);
@@ -127,27 +120,24 @@ const ProductDetail = () => {
 
     const info = getDisplayInfo();
 
-    // --- XỬ LÝ MUA HÀNG (LOGIC MỚI) ---
     const handleAction = (isBuyNow) => {
         if (!product) return;
 
-        // Kiểm tra biến thể
         const variants = product.tblProductVariants || [];
         if (variants.length > 0 && !selectedVariantId) {
             alert("Vui lòng chọn phân loại sản phẩm (Màu sắc/Kích thước)!");
             return;
         }
 
-        // Kiểm tra tồn kho cụ thể
         if (info.stock <= 0) {
             alert("Sản phẩm/Phân loại này tạm hết hàng.");
             return;
         }
 
-        // Dữ liệu để thêm vào giỏ
+        // Dữ liệuthêm vào giỏ
         const itemToAdd = {
             productId: product.productId,
-            variantId: currentVariant ? currentVariant.variantId : null, // [cite: 137]
+            variantId: currentVariant ? currentVariant.variantId : null, 
             productName: product.productName,
             variantName: currentVariant ? currentVariant.variantName : '',
             price: info.price,
@@ -166,13 +156,11 @@ const ProductDetail = () => {
 
     return (
         <div style={{ padding: '40px', maxWidth: '1100px', margin: '0 auto' }}>
-             {/* Styles nội bộ */}
             <style>{`
                 .html-content img { max-width: 100% !important; height: auto !important; display: block; margin: 10px auto; }
                 .html-content table { width: 100% !important; }
                 .html-content { font-family: inherit; line-height: 1.6; color: #333; }
-                
-                /* Style cho nút biến thể */
+
                 .variant-btn {
                     padding: 8px 15px;
                     border: 1px solid #ddd;
@@ -193,7 +181,7 @@ const ProductDetail = () => {
                 .variant-btn.active {
                     border-color: #2e7d32;
                     color: #2e7d32;
-                    background-color: #f1f8e9; /* Màu nền xanh nhạt */
+                    background-color: #f1f8e9; 
                     font-weight: bold;
                 }
                 .variant-btn.disabled {
@@ -203,7 +191,6 @@ const ProductDetail = () => {
                     color: #aaa;
                     border-color: #eee;
                 }
-                /* Dấu tick góc nút (tùy chọn giống Shopee) */
                 .tick-icon {
                     position: absolute;
                     bottom: 0;
@@ -217,7 +204,6 @@ const ProductDetail = () => {
 
             <div style={{ display: 'flex', gap: '50px', flexWrap: 'wrap' }}>
                 
-                {/* --- CỘT TRÁI: HÌNH ẢNH (GIỮ NGUYÊN) --- */}
                 <div style={{ flex: '1', minWidth: '350px' }}>
                     <div style={{ width: '100%', height: '450px', backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '8px', position: 'relative', display: 'flex', overflow: 'hidden' }}>
                         {images.length > 0 ? (
@@ -257,7 +243,6 @@ const ProductDetail = () => {
                     </div>
                 </div>
 
-                {/* --- CỘT PHẢI: THÔNG TIN (SỬA ĐỔI) --- */}
                 <div style={{ flex: '1', minWidth: '350px' }}>
                     <h1 style={{ marginBottom: '10px', fontSize: '24px' }}>{product.productName}</h1>
                     <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -265,7 +250,6 @@ const ProductDetail = () => {
                         <p style={{ color: '#666', fontSize: '14px' }}>Lượt bán: <strong>2k+</strong></p>
                     </div>
 
-                    {/* HIỂN THỊ GIÁ */}
                     <div style={{ backgroundColor: '#fafafa', padding: '15px 20px', margin: '20px 0', borderRadius: '4px' }}>
                         <div style={{ fontSize: '30px', fontWeight: 'bold', color: '#d32f2f', display:'flex', alignItems:'center' }}>
                             {info.isSale ? (
@@ -286,12 +270,11 @@ const ProductDetail = () => {
                         </div>
                     </div>
 
-                    {/* MÔ TẢ NGẮN */}
                     <div style={{ marginBottom: '25px', fontSize: '14px', color: '#555' }}>
                          <div className="html-content" dangerouslySetInnerHTML={{ __html: cleanHtmlContent(product.shortDescription) }} />
                     </div>
 
-                    {/* --- [QUAN TRỌNG] PHẦN CHỌN BIẾN THỂ (GIỐNG SHOPEE) --- */}
+                    {/* chọn biến thể */}
                     {product.tblProductVariants && product.tblProductVariants.length > 1 && (
                         <div style={{ marginBottom: '25px' }}>
                             <h4 style={{ fontSize: '14px', color: '#757575', marginBottom: '10px', textTransform:'uppercase' }}>Phân loại hàng</h4>
@@ -307,7 +290,7 @@ const ProductDetail = () => {
                                             disabled={isOutOfStock}
                                         >
                                             {v.variantName}
-                                            {/* Icon tick nhỏ ở góc giống Shopee */}
+                                            {/* Icon tick nhỏ ở góc */}
                                             {isActive && (
                                                 <>
                                                     <div className="tick-icon"></div>
@@ -321,7 +304,6 @@ const ProductDetail = () => {
                         </div>
                     )}
 
-                    {/* --- BỘ CHỌN SỐ LƯỢNG & TỒN KHO --- */}
                     <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center' }}>
                         <strong style={{ marginRight: '20px', color: '#757575', fontSize: '14px', textTransform:'uppercase' }}>Số lượng</strong>
                         
@@ -345,7 +327,6 @@ const ProductDetail = () => {
                         </span>
                     </div>
 
-                    {/* --- HAI NÚT MUA HÀNG --- */}
                     <div style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
                         <button 
                             onClick={() => handleAction(false)} 
@@ -381,13 +362,11 @@ const ProductDetail = () => {
                 </div>
             </div>
 
-            {/* --- MÔ TẢ CHI TIẾT --- */}
             <div style={{ marginTop: '60px', borderTop: '1px solid #eee', paddingTop: '30px' }}>
                 <h3 style={{ borderBottom: '3px solid #2e7d32', display: 'inline-block', paddingBottom: '8px', fontSize: '20px', textTransform: 'uppercase', color: '#333' }}>MÔ TẢ SẢN PHẨM</h3>
                 <div className="html-content" style={{ marginTop: '20px' }} dangerouslySetInnerHTML={{ __html: cleanHtmlContent(product.detailDescription) }} />
             </div>
 
-            {/* --- SẢN PHẨM TƯƠNG TỰ --- */}
             <div style={{ marginTop: '60px', borderTop: '1px solid #eee', paddingTop: '30px' }}>
                 <h3 style={{ fontSize: '20px', textTransform: 'uppercase', color: '#333', marginBottom: '20px' }}>SẢN PHẨM TƯƠNG TỰ</h3>
                 {relatedProducts.length > 0 ? (
@@ -401,7 +380,6 @@ const ProductDetail = () => {
                 )}
             </div>
 
-            {/* --- LIGHTBOX MODAL --- */}
             {isLightboxOpen && (
                 <div 
                     style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.95)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', userSelect: 'none' }}

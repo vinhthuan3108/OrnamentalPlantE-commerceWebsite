@@ -8,7 +8,7 @@ const VariantSelectionModal = ({ isOpen, onClose, product, onConfirm }) => {
     // Reset state khi mở modal với sản phẩm mới
     useEffect(() => {
         if (isOpen && product && product.tblProductVariants?.length > 0) {
-            // Mặc định chọn variant đầu tiên để khách đỡ phải bấm
+            // Mặc định chọn variant đầu tiên
             setSelectedVariantId(product.tblProductVariants[0].variantId);
             setQuantity(1);
         }
@@ -22,8 +22,7 @@ const VariantSelectionModal = ({ isOpen, onClose, product, onConfirm }) => {
 
     const handleConfirm = () => {
         if (!selectedVariantId) return alert("Vui lòng chọn phân loại!");
-        
-        // Gửi dữ liệu variant đã chọn ra ngoài
+
         onConfirm(selectedVariantId, quantity, currentVariant);
         onClose();
     };
@@ -38,7 +37,6 @@ const VariantSelectionModal = ({ isOpen, onClose, product, onConfirm }) => {
                 backgroundColor: 'white', width: '400px', padding: '20px',
                 borderRadius: '8px', position: 'relative', boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
             }}>
-                {/* Nút đóng */}
                 <button onClick={onClose} style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', color: '#666' }}>
                     <FaTimes />
                 </button>
@@ -68,7 +66,6 @@ const VariantSelectionModal = ({ isOpen, onClose, product, onConfirm }) => {
                     </div>
                 </div>
 
-                {/* Thông tin chi tiết của Variant đang chọn */}
                 <div style={{ marginBottom: '20px', padding: '12px', background: '#f8f9fa', borderRadius: '6px', border: '1px solid #eee' }}>
                     <div style={{display:'flex', justifyContent:'space-between', marginBottom: '5px'}}>
                         <span style={{fontSize: '14px'}}>Giá bán:</span>
@@ -82,14 +79,13 @@ const VariantSelectionModal = ({ isOpen, onClose, product, onConfirm }) => {
                     </div>
                 </div>
 
-                {/* Chọn số lượng */}
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', justifyContent: 'center' }}>
                     <button onClick={() => setQuantity(q => Math.max(1, q - 1))} style={{ width: '32px', height: '32px', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>-</button>
                     <input type="text" value={quantity} readOnly style={{ width: '50px', textAlign: 'center', height: '32px', borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd', borderLeft: 'none', borderRight: 'none', outline: 'none' }} />
                     <button onClick={() => setQuantity(q => q + 1)} style={{ width: '32px', height: '32px', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>+</button>
                 </div>
 
-                {/* Nút xác nhận */}
+
                 <button 
                     onClick={handleConfirm}
                     disabled={!currentVariant.stockQuantity || currentVariant.stockQuantity <= 0}

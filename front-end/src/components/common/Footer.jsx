@@ -6,18 +6,17 @@ import './Footer.css';
 import { API_BASE } from '../../utils/apiConfig.jsx';
 
 const Footer = () => {
-    // State lưu cấu hình
+
     const [config, setConfig] = useState({});
-    // State lưu danh mục nổi bật (Cột 3)
+
     const [categories, setCategories] = useState([]); 
-    // State lưu bài viết hướng dẫn (Cột 2)
+
     const [guidePosts, setGuidePosts] = useState([]);
-    
-    // State mới cho Tin tức (Cột 4)
+
     const [latestNews, setLatestNews] = useState([]);
 
     useEffect(() => {
-        // 1. Hàm lấy cấu hình hệ thống
+        //Hàm lấy cấu hình hệ thống
         const fetchConfig = async () => {
             try {
                 const res = await axios.get(`${API_BASE}/api/TblSystemConfig`);
@@ -33,7 +32,7 @@ const Footer = () => {
             }
         };
 
-        // 2. Hàm lấy danh mục nổi bật
+        //danh mục nổi bật
         const fetchCategories = async () => {
             try {
                 const res = await axios.get(`${API_BASE}/api/TblCategories/best-selling`);
@@ -43,31 +42,31 @@ const Footer = () => {
             }
         };
 
-        // 3. Hàm lấy bài viết (Xử lý cho cả Hướng dẫn và Tin tức mới)
+        
         const fetchPostsData = async () => {
             try {
-                // Gọi API lấy tất cả bài đã Published
+                
                 const res = await axios.get(`${API_BASE}/api/TblPosts?status=Published`);
                 
                 if (res.data) {
-                    // --- XỬ LÝ CỘT 2: BÀI HƯỚNG DẪN (Lấy 4 bài) ---
+                    
                     const guides = res.data.filter(p => 
                         p.categoryName && p.categoryName.toLowerCase().includes("hướng dẫn")
                     );
                     guides.sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
                     setGuidePosts(guides.slice(0, 4));
 
-                    // --- XỬ LÝ CỘT 4: BÀI VIẾT MỚI NHẤT (Lọc category & Lấy 2 bài) ---
+                    //Lọc category & Lấy 2 bài
                     const news = res.data.filter(p => {
                         const catName = p.categoryName ? p.categoryName.toLowerCase() : "";
-                        // Logic lọc giống BlogPage: bỏ "giới thiệu" và "hướng dẫn"
+                        
                         return !catName.includes("giới thiệu") && !catName.includes("hướng dẫn");
                     });
 
                     // Sắp xếp giảm dần theo ngày
                     news.sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
                     
-                    // ==> CHỈ LẤY 2 BÀI <==
+                    
                     setLatestNews(news.slice(0, 2));
                 }
             } catch (error) {
@@ -84,7 +83,7 @@ const Footer = () => {
         <footer className="footer-wrapper">
             
             <div className="footer-container">
-                {/* Cột 1: Thông tin cửa hàng */}
+                
                 <div className="footer-col">
                     <h3>{config.StoreName ? config.StoreName.toUpperCase() : "PLANT SHOP"}</h3>
                     
@@ -104,7 +103,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Cột 2: Hỗ trợ khách hàng */}
+                
                 <div className="footer-col">
                     <h3>Hỗ trợ khách hàng</h3>
                     <ul className="footer-links">
@@ -125,7 +124,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Cột 3: Danh mục nổi bật */}
+                
                 <div className="footer-col">
                     <h3>Danh mục nổi bật</h3>
                     <ul className="footer-links">
@@ -143,13 +142,12 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Cột 4: Tin tức mới nhất (Hiển thị 2 bài) */}
                 <div className="footer-col">
                     <h3>Tin tức mới nhất</h3>
                     <ul className="footer-links">
                         {latestNews.length > 0 ? (
                             latestNews.map(post => (
-                                <li key={post.postId} style={{marginBottom: '15px'}}> {/* Tăng khoảng cách vì chỉ có 2 bài */}
+                                <li key={post.postId} style={{marginBottom: '15px'}}>
                                     <Link to={`/blog/${post.postId}`} style={{display: 'block', lineHeight: '1.4', fontWeight: '500'}}>
                                         {post.title}
                                     </Link>

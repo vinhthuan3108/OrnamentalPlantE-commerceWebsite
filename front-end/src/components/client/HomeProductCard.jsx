@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import defaultImg from '../../assets/images/logo.png'; 
-import VariantSelectionModal from './VariantSelectionModal'; // Import Modal mới tạo
-
+import VariantSelectionModal from './VariantSelectionModal'; 
 const HomeProductCard = ({ product, addToCart, baseUrl }) => {
-    // --- STATE ---
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [fullProductData, setFullProductData] = useState(null); // Lưu data đầy đủ (kèm variants) khi fetch
 
-    // --- CHUẨN HÓA DỮ LIỆU ---
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [fullProductData, setFullProductData] = useState(null); 
+
+
     const originalPrice = product.originalPrice ?? product.OriginalPrice ?? 0;
     const salePrice = product.salePrice ?? product.SalePrice;
     const stockQuantity = product.stockQuantity ?? product.StockQuantity ?? 0;
     const productName = product.productName ?? product.ProductName ?? "Sản phẩm";
     const productId = product.productId ?? product.ProductId;
 
-    // --- LOGIC HIỂN THỊ ---
+  
     const isOutOfStock = stockQuantity <= 0;
     const isSale = salePrice > 0 && salePrice < originalPrice;
     const displayPrice = isSale ? salePrice : originalPrice;
 
-    // --- HÀM LẤY ẢNH ---
+
     const getProductImage = (prod) => {
         let imagePath = null;
         if (prod.Thumbnail) imagePath = prod.Thumbnail;
@@ -38,21 +37,20 @@ const HomeProductCard = ({ product, addToCart, baseUrl }) => {
         return `${cleanBase}/${cleanPath}`;
     };
 
-    // --- XỬ LÝ KHI BẤM "THÊM VÀO GIỎ" ---
     const handleAddToCartClick = async () => {
         if (!addToCart || isOutOfStock) return;
 
-        // 1. Gọi API lấy chi tiết sản phẩm để lấy danh sách Variants mới nhất
+        //Gọi API lấy chi tiết sản phẩm để lấy danh sách Variants mới nhất
         try {
             const res = await fetch(`${baseUrl}/api/TblProducts/${productId}`);
             if (res.ok) {
                 const data = await res.json();
-                setFullProductData(data); // Lưu lại để truyền vào Modal nếu cần
+                setFullProductData(data); // Lưu lại để truyền vào Modal
 
                 const variants = data.tblProductVariants || [];
                 
                 if (variants.length === 1) {
-                    // TRƯỜNG HỢP A: Chỉ có 1 loại -> Thêm ngay lập tức
+                    // th Chỉ có 1 loại -> Thêm ngay lập tức
                     const variant = variants[0];
                     if (variant.stockQuantity <= 0) {
                         alert("Sản phẩm này tạm hết hàng.");
@@ -60,7 +58,7 @@ const HomeProductCard = ({ product, addToCart, baseUrl }) => {
                     }
 
                     addToCart({
-                        variantId: variant.variantId, // QUAN TRỌNG: Gửi variantId cho Backend
+                        variantId: variant.variantId, 
                         productName: data.productName,
                         variantName: variant.variantName,
                         price: variant.salePrice || variant.originalPrice,
@@ -68,7 +66,7 @@ const HomeProductCard = ({ product, addToCart, baseUrl }) => {
                         quantity: 1
                     });
                 } else if (variants.length > 1) {
-                    // TRƯỜNG HỢP B: Có nhiều loại -> Mở Modal để khách chọn
+                    // Trường hợp Có nhiều loại -> Mở Modal để khách chọn
                     setIsModalOpen(true);
                 } else {
                     alert("Lỗi dữ liệu: Sản phẩm chưa có phân loại hàng.");
@@ -82,7 +80,6 @@ const HomeProductCard = ({ product, addToCart, baseUrl }) => {
         }
     };
 
-    // --- CALLBACK KHI KHÁCH ĐÃ CHỌN XONG TỪ MODAL ---
     const handleModalConfirm = (variantId, qty, variantData) => {
         addToCart({
             variantId: variantId,
@@ -139,7 +136,6 @@ const HomeProductCard = ({ product, addToCart, baseUrl }) => {
                         )}
                     </div>
 
-                    {/* Nút Thêm vào giỏ đã được cập nhật logic */}
                     <button 
                         className={`hp-btn-solid ${isOutOfStock ? 'btn-disabled' : ''}`} 
                         onClick={handleAddToCartClick}
@@ -151,7 +147,6 @@ const HomeProductCard = ({ product, addToCart, baseUrl }) => {
                 </div>
             </div>
 
-            {/* Modal chọn phân loại */}
             <VariantSelectionModal 
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

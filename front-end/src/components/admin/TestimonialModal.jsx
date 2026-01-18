@@ -5,13 +5,13 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
     const [name, setName] = useState('');
     const [role, setRole] = useState('');
     const [content, setContent] = useState('');
-    const [avatarUrl, setAvatarUrl] = useState(''); // Lưu link ảnh (text)
+    const [avatarUrl, setAvatarUrl] = useState(''); 
     const [rating, setRating] = useState(5);
     const [active, setActive] = useState(true);
     const getImageUrl = (url) => {
         if (!url) return null;
         if (url.startsWith('http')) return url;
-        return `${API_HOST}${url}`;
+        return `${API_BASE}${url}`;
     }
     useEffect(() => {
         if (initialData) {
@@ -56,7 +56,7 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
         formData.append('file', file);
 
         try {
-            // Gọi đúng type 'testimonials' để backend lưu vào folder testimonials
+            
             const res = await fetch(`${API_BASE}/api/Upload/testimonials`, {
                 method: 'POST',
                 body: formData
@@ -64,7 +64,7 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
 
             if (res.ok) {
                 const data = await res.json();
-                setAvatarUrl(data.url); // Tự động điền link ảnh vào state
+                setAvatarUrl(data.url); 
             } else {
                 alert('Upload thất bại');
             }
@@ -81,7 +81,7 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
             <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', width: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
                 <h3>{initialData ? 'Cập Nhật Đánh Giá' : 'Thêm Đánh Giá Mới'}</h3>
 
-                {/* Hàng 1: Tên + Chức vụ */}
+                
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                     <div style={{ flex: 1 }}>
                         <label>Tên khách hàng:</label>
@@ -93,7 +93,7 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
                     </div>
                 </div>
 
-                {/* Hàng 2: Link Ảnh Avatar */}
+            
                 <div style={{ marginBottom: '10px' }}>
                     <label>Ảnh Avatar:</label>
                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -107,10 +107,10 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
                             style={{ flex: 1, padding: '8px' }} 
                         />
                         
-                        {/* Xem trước ảnh nhỏ - SỬA Ở ĐÂY */}
+                        
                         {avatarUrl && (
                             <img 
-                                src={getImageUrl(avatarUrl)} // <-- Gọi hàm xử lý link
+                                src={getImageUrl(avatarUrl)} 
                                 alt="Preview" 
                                 style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ddd' }} 
                             />
@@ -118,13 +118,13 @@ function TestimonialModal({ isOpen, onClose, onSubmit, initialData }) {
                     </div>
                 </div>
 
-                {/* Hàng 3: Nội dung */}
+                
                 <div style={{ marginBottom: '10px' }}>
                     <label>Nội dung đánh giá:</label>
                     <textarea value={content} onChange={e => setContent(e.target.value)} style={{ width: '100%', height: '80px', padding: '8px' }} />
                 </div>
 
-                {/* Hàng 4: Số sao + Checkbox */}
+                
                 <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', alignItems: 'center' }}>
                     <div>
                         <label>Số sao (1-5): </label>

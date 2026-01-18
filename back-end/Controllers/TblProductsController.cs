@@ -344,7 +344,7 @@ namespace back_end.Controllers
                 {
                     p.ProductId,
                     p.ProductName,
-                    // Lấy giá hiển thị giống API Shop
+                    StockQuantity = p.TblProductVariants.Sum(v => v.StockQuantity ?? 0),
                     OriginalPrice = p.TblProductVariants.OrderBy(v => v.OriginalPrice).Select(v => v.OriginalPrice).FirstOrDefault(),
                     SalePrice = p.TblProductVariants.OrderBy(v => v.OriginalPrice).Select(v => v.SalePrice).FirstOrDefault(),
 

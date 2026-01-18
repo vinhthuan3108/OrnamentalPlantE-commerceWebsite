@@ -20,25 +20,24 @@ function Login() {
                 body: JSON.stringify({ email, password })
             });
             
-            // 1. Kiểm tra nếu có lỗi từ Backend (status code != 200-299)
+
             if (!res.ok) {
                 const errorMsg = await res.text(); 
-                
-                // --- THAY ALERT BẰNG SWEETALERT (LỖI) ---
+
                 Swal.fire({
                     icon: 'error',
                     title: 'Đăng nhập thất bại!',
-                    text: errorMsg || "Sai email hoặc mật khẩu", // Backend trả về: "Sai email hoặc mật khẩu."
+                    text: errorMsg || "Sai email hoặc mật khẩu", 
                     confirmButtonText: 'Thử lại',
                     confirmButtonColor: '#d33'
                 });
                 return; 
             }
 
-            // 2. Nếu thành công thì mới parse JSON
+
             const data = await res.json();
 
-            // 3. Xử lý lưu thông tin user
+
             const userSave = {
                 userId: data.userId,
                 email: email,
@@ -52,13 +51,12 @@ function Login() {
             window.dispatchEvent(new Event('user-change'));
             await refreshCart(); 
 
-            // --- THÊM SWEETALERT (THÀNH CÔNG) ---
-            // Hiện thông báo nhỏ góc trên rồi mới chuyển trang
+
             await Swal.fire({
                 icon: 'success',
                 title: `Xin chào, ${data.fullName}!`,
                 text: 'Đăng nhập thành công',
-                timer: 700, // Tự tắt sau 1.5s
+                timer: 700,
                 showConfirmButton: false,
                 position: 'center'
             });
@@ -71,7 +69,6 @@ function Login() {
             
         } catch (error) {
             console.error(error);
-            // --- THAY ALERT BẰNG SWEETALERT (LỖI KẾT NỐI) ---
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi kết nối!',

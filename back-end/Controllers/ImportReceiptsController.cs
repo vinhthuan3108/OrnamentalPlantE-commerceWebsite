@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
-namespace back_end.Controllers // Đảm bảo namespace đúng với project của bạn
+namespace back_end.Controllers 
 {
     [Route("api/[controller]")]
     [ApiController]

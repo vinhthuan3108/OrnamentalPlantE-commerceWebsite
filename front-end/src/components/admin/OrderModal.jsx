@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Định nghĩa Icon Close dùng riêng cho Modal
 const CloseIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -32,7 +31,6 @@ const OrderModal = ({ isOpen, onClose, order, onUpdateStatus, updating }) => {
 
     const formatMoney = (amount) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount || 0);
 
-    // --- HÀM MỚI: Dịch phương thức thanh toán sang tiếng Việt ---
     const getPaymentMethodText = (method) => {
         if (!method) return 'Chưa xác định';
         const m = method.toUpperCase();
@@ -76,7 +74,6 @@ const OrderModal = ({ isOpen, onClose, order, onUpdateStatus, updating }) => {
 
                 {/* Body */}
                 <div style={{ padding: '24px' }}>
-                    {/* Thông tin chung */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
                         <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
                             <h6 style={{ fontWeight: 'bold', marginBottom: '12px', color: '#495057', textTransform: 'uppercase', fontSize: '12px' }}>Người nhận hàng</h6>
@@ -96,7 +93,6 @@ const OrderModal = ({ isOpen, onClose, order, onUpdateStatus, updating }) => {
                                 </p>
 
                             </div>
-                            {/* --------------------------------- */}
 
                         </div>
                     </div>
@@ -148,7 +144,6 @@ const OrderModal = ({ isOpen, onClose, order, onUpdateStatus, updating }) => {
                     </div>
                 </div>
 
-                {/* Footer Actions */}
                 <div style={{ padding: '20px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'flex-end', gap: '10px', backgroundColor: '#f9fafb', borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px' }}>
                     <button onClick={onClose} style={{ padding: '8px 16px', background: 'white', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Đóng</button>
 

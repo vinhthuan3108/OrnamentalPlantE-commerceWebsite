@@ -5,10 +5,9 @@ function BannerModal({ isOpen, onClose, onSubmit, initialData }) {
     const [link, setLink] = useState('');
     const [order, setOrder] = useState(0);
     const [active, setActive] = useState(true);
-    
-    // State xử lý ảnh
-    const [selectedFile, setSelectedFile] = useState(null); // File user chọn
-    const [currentImageUrl, setCurrentImageUrl] = useState(''); // Link ảnh (cũ hoặc mới)
+
+    const [selectedFile, setSelectedFile] = useState(null); 
+    const [currentImageUrl, setCurrentImageUrl] = useState(''); 
     const [previewUrl, setPreviewUrl] = useState(''); // Để hiển thị xem trước
 
     //const API_DOMAIN = 'https://localhost:7298'; 
@@ -19,7 +18,7 @@ function BannerModal({ isOpen, onClose, onSubmit, initialData }) {
             setLink(initialData.linkUrl || '');
             setOrder(initialData.displayOrder || 0);
             setActive(initialData.isActive ?? true);
-            setCurrentImageUrl(initialData.imageUrl || ''); // Lưu link ảnh cũ
+            setCurrentImageUrl(initialData.imageUrl || ''); 
             setPreviewUrl(initialData.imageUrl ? `${API_BASE}${initialData.imageUrl}` : '');
         } else {
             resetForm();
@@ -49,7 +48,6 @@ function BannerModal({ isOpen, onClose, onSubmit, initialData }) {
         const formData = new FormData();
         formData.append('file', file);
         
-        // Gọi vào API UploadController bạn vừa gửi, type="banners"
         const res = await fetch(`${API_BASE}/api/Upload/banners`, {
             method: 'POST',
             body: formData
@@ -66,8 +64,7 @@ function BannerModal({ isOpen, onClose, onSubmit, initialData }) {
         if (!initialData && !selectedFile) return alert("Vui lòng chọn ảnh!");
 
         try {
-            let finalImageUrl = currentImageUrl; // Mặc định dùng link cũ
-
+            let finalImageUrl = currentImageUrl; 
             // Nếu người dùng có chọn file mới -> Upload lấy link mới
             if (selectedFile) {
                 finalImageUrl = await uploadImage(selectedFile);
@@ -79,10 +76,10 @@ function BannerModal({ isOpen, onClose, onSubmit, initialData }) {
                 linkUrl: link,
                 displayOrder: parseInt(order),
                 isActive: active,
-                imageUrl: finalImageUrl // Gán link ảnh vào đây
+                imageUrl: finalImageUrl 
             };
 
-            onSubmit(bannerData); // Gửi JSON về component cha
+            onSubmit(bannerData); 
             
         } catch (error) {
             alert("Có lỗi khi xử lý ảnh: " + error.message);
@@ -99,7 +96,6 @@ function BannerModal({ isOpen, onClose, onSubmit, initialData }) {
             <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', width: '500px' }}>
                 <h3>{initialData ? 'Cập Nhật Banner' : 'Thêm Banner Mới'}</h3>
                 
-                {/* Chọn ảnh */}
                 <div style={{ marginBottom: '15px' }}>
                     <label>Hình ảnh:</label> <br/>
                     <input type="file" accept="image/*" onChange={handleFileChange} />

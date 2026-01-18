@@ -14,7 +14,6 @@ function Sidebar() {
     }));
   };
 
-  // --- Styles ---
   const sidebarStyle = { width: '260px', height: '100vh', backgroundColor: '#333', color: 'white', padding: '20px', display: 'flex', flexDirection: 'column', position: 'fixed', left: 0, top: 0, overflowY: 'auto' };
   const linkStyle = { color: 'white', textDecoration: 'none', padding: '12px 15px', marginBottom: '5px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'background 0.3s', cursor: 'pointer' };
   const subLinkStyle = { ...linkStyle, paddingLeft: '40px', fontSize: '0.9em', backgroundColor: 'rgba(255, 255, 255, 0.05)', marginBottom: '2px' };
@@ -73,7 +72,6 @@ function Sidebar() {
         })}
       </nav>
       
-      {/* ĐÃ XÓA PHẦN FOOTER CỦA SIDEBAR (Trang khách hàng & Đăng xuất) Ở ĐÂY */}
     </aside>
   );
 }

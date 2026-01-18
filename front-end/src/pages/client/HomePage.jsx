@@ -298,7 +298,7 @@ function HomePage() {
 
       {/* 5. KHÁCH HÀNG */}
       <section className="section-container" style={{ backgroundColor: '#fff' }}>
-        <h2 className="section-title">KHÁCH HÀNG NÓI VỀ PLANT SHOP</h2>
+        <h2 className="section-title">KHÁCH HÀNG NÓI VỀ CÂY CẢNH NHA TRANG</h2>
         <div 
             style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto' }}
             onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={() => onTouchEnd('testimonial')}

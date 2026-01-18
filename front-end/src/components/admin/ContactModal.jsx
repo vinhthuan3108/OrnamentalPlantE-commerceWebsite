@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../../utils/apiConfig.jsx';
 const ContactModal = ({ isOpen, onClose, contact, onUpdateStatus, refreshData }) => {
-    // State quản lý nội dung phản hồi
+
     const [replyMessage, setReplyMessage] = useState('');
-    const [isReplying, setIsReplying] = useState(false); // Trạng thái mở khung soạn thảo
+    const [isReplying, setIsReplying] = useState(false); 
     const [sending, setSending] = useState(false);
 
-    // Reset state khi mở modal mới
     useEffect(() => {
         if (isOpen) {
             setReplyMessage('');
@@ -18,13 +17,11 @@ const ContactModal = ({ isOpen, onClose, contact, onUpdateStatus, refreshData })
 
     if (!isOpen || !contact) return null;
 
-    // Hàm gửi phản hồi
     const handleSendReply = async () => {
         if (!replyMessage.trim()) return alert("Vui lòng nhập nội dung phản hồi");
 
         setSending(true);
         try {
-            // Gọi API Backend vừa viết
             await axios.post(`${API_BASE}/api/Contacts/reply/${contact.contactId}`, {
                 subject: contact.subject || "Hỗ trợ khách hàng",
                 message: replyMessage
@@ -32,7 +29,7 @@ const ContactModal = ({ isOpen, onClose, contact, onUpdateStatus, refreshData })
             
             alert("Đã gửi phản hồi thành công!");
             refreshData(); // Load lại danh sách bên ngoài
-            onClose(); // Đóng modal
+            onClose(); 
         } catch (error) {
             console.error(error);
             alert("Lỗi khi gửi mail: " + (error.response?.data || error.message));
@@ -41,7 +38,6 @@ const ContactModal = ({ isOpen, onClose, contact, onUpdateStatus, refreshData })
         }
     };
 
-    // Style
     const labelStyle = { display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#555' };
     const valueStyle = { width: '100%', padding: '10px', marginBottom: '15px', backgroundColor: '#f9f9f9', border: '1px solid #ddd', borderRadius: '4px' };
 

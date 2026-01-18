@@ -218,8 +218,11 @@ namespace back_end.Controllers
                 .ToListAsync();
 
             // Tạo danh sách slowMovingList
+            // ... Các đoạn code bên trên giữ nguyên
+
+            // Tạo danh sách slowMovingList
             var slowMovingList = inventoryProducts
-                .Where(p => !recentSoldProductIds.Contains(p.ProductId))
+                .Where(p => !recentSoldProductIds.Contains(p.ProductId)) // Đã lọc những SP không bán được gần đây
                 .Select(p => {
                     // Tìm ngày nhập cuối
                     var lastImport = _context.TblImportReceiptDetails
@@ -237,31 +240,43 @@ namespace back_end.Controllers
                     decimal stuckCapital = p.TblProductVariants.Sum(v =>
                         (v.StockQuantity ?? 0) * (avgCostMap.ContainsKey(v.VariantId) ? avgCostMap[v.VariantId] : 0));
 
+                    // Tính số ngày tồn kho
+                    // Lưu ý: Nếu dữ liệu test bị nhập ngày tương lai (năm 2026) thì kết quả sẽ < 0, ta nên Math.Max(0, ...)
+                    int daysSince = 0;
+                    if (lastImport.HasValue)
+                    {
+                        var span = DateTime.Now - lastImport.Value;
+                        daysSince = span.Days > 0 ? span.Days : 0;
+                    }
+
                     return new SlowMovingProductDto
                     {
+                        ProductId = p.ProductId, // Nên thêm Id để key unique
                         ProductName = p.ProductName,
                         CategoryName = p.Category.CategoryName,
                         Thumbnail = thumbFull,
                         StockQuantity = p.TblProductVariants.Sum(v => v.StockQuantity ?? 0),
                         CapitalPrice = stuckCapital,
                         LastImportDate = lastImport,
-                        DaysSinceLastImport = lastImport.HasValue ? (DateTime.Now - lastImport.Value).Days : 0
+                        DaysSinceLastImport = daysSince
                     };
                 })
+                // --- BỔ SUNG LỌC Ở ĐÂY ---
+                .Where(x => x.DaysSinceLastImport >= slowMovingDays)
+                // -------------------------
                 .OrderByDescending(x => x.DaysSinceLastImport)
                 .Take(20)
                 .ToList();
 
-
             return Ok(new ProductStatsResponse
             {
-                TopProducts = pagedTopProducts, 
-                TotalProducts = totalItems,     
-                TotalPages = totalPages,        
-                CurrentPage = page,            
+                TopProducts = pagedTopProducts,
+                TotalProducts = totalItems,
+                TotalPages = totalPages,
+                CurrentPage = page,
 
                 CategoryShares = categoryShares,
-                SlowMovingProducts = slowMovingList 
+                SlowMovingProducts = slowMovingList
             });
         }
     }
